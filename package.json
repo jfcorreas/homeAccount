@@ -1,6 +1,11 @@
 {
   "name": "homeaccount",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "author": "Juan Francisco Correas Munuera <jfcorreas@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jfcorreas/homeAccount.git"
+  },  
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -37,7 +42,9 @@
     "karma-coffee-preprocessor": "~0.1.0",
     "karma-phantomjs-launcher": "~0.1.0",
     "karma": "~0.10.4",
-    "karma-ng-html2js-preprocessor": "~0.1.0"
+    "karma-ng-html2js-preprocessor": "~0.1.0",
+    "chai": "~1.8.1",
+    "mongoose": ">=2.7.0"
   },
   "engines": {
     "node": ">=0.8.0"

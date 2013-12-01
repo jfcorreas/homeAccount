@@ -1,7 +1,7 @@
-- Almacenar de forma persistente un apunte contable (gasto o ingreso)
+· Almacenar de forma persistente un apunte contable (gasto o ingreso)
 	· Presentar un formulario al usuario para rellenar el apunte
-	· El apunte debe contener: concepto o descripción, importe y fecha
+	| El apunte debe contener: concepto o descripción, tipo, importe y fecha
 	· Almacenar el apunte en BBDD
-- Asociar un apunte con distintas categorias y/o miembros de la casa
-- Calcular el balance contable mensual
-- Explotación de datos mediante tablas y/o gráficas
+· Asociar un apunte con distintas categorias y/o miembros de la casa
+· Calcular el balance contable mensual
+· Explotación de datos mediante tablas y/o gráficas
