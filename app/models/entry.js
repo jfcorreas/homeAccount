@@ -17,9 +17,10 @@ var EntrySchema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
-	entryDate: {
+	date: {
 		type: Date,
-		'default': Date.now
+		required: true,
+		default: Date.now 	
 	}
 });
 try {
