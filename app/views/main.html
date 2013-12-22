@@ -8,20 +8,21 @@
 </div>
 
 <div class="jumbotron">
-	<h1>'Allo, 'Allo!</h1>
-	<p class="lead">Always a pleasure scaffolding your apps.</p>
-	<p><a class="btn btn-lg btn-success" href="#">Splendid!</a></p>
+	<h1>Nueva Entrada</h1>
+	<p class="lead">Introduzca un nuevo apunte contable:</p>
+	<label>Concepto</label>
+	<input type="text" ng-model="entry.concept">
+	<label>Tipo(Ingreso o Gasto)</label>
+	<input type="text" ng-model="entry.conceptType">
+	<label>Cantidad(en céntimos)</label>
+	<input type="text" ng-model="entry.amount">
+	<label>Fecha</label>
+	<input type="date" ng-model="entry.date">			
 </div>
 
 <div class="row marketing">
-	<h4>HTML5 Boilerplate</h4>
-	<p>HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.</p>
+	<pre ng-bind="entry | json"></pre>
 
-	<h4>Angular</h4>
-	<p>AngularJS is a toolset for building the framework most suited to your application development.</p>
-
-	<h4>Karma</h4>
-	<p>Spectacular Test Runner for JavaScript.</p>
 </div>
 </div>
 
