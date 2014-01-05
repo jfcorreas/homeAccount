@@ -1,15 +1,15 @@
-
+'use strict';
 /**
  * Module dependencies.
  */
 
 var express = require('express')
-  , routes = require('./routes');
+  //, routes = require('./routes')
+  , config = require('./config');
 
 var app = module.exports = express.createServer();
 
-var dbURL = 'mongodb://localhost:27017/homeAccount';
-var db = require('mongoose').connect(dbURL);
+var db = null;
 
 // Configuration
 
@@ -24,17 +24,19 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  db = require('mongoose').connect(config.dbtest.mongodb);
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler());
+  db = require('mongoose').connect(config.db.mongodb);
 });
 
 // Routes
 
 //app.get('/', routes.index);
-require('./routes/session')(app);
+require('./routes/entries')(app);
 
 app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+  console.log("HomeAccount Backend listening on port %d in %s mode", app.address().port, app.settings.env);
 });

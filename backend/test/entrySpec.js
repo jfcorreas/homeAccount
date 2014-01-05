@@ -7,16 +7,16 @@ var expect = require('chai').expect,
 var mongoose = require('mongoose'),
     entry = require('../models/entry');
 
-entry.on('error', function(err) {
-  console.log(err);
-});
-
-var db = mongoose.connect(config.dbtest.mongodb);    
-
 describe('Models: entry', function () {
 
   var currentEntry = null;
   var currentDate = null;
+  var db = null;
+
+  before(function (done) {
+    db = mongoose.connect(config.dbtest.mongodb);
+    done(); 
+  });
 
   beforeEach(function (done) {
     currentDate = Date.now();
@@ -27,6 +27,7 @@ describe('Models: entry', function () {
       date: currentDate
     };
     entry.create(oneEntry, function(err, doc) {
+      if (err) { throw err; }
       currentEntry = doc;
       done();
     });
@@ -38,20 +39,25 @@ describe('Models: entry', function () {
     });
   });
 
-  it('should exist', function (done) {
+  it('should exist', function () {
     should.exist(currentEntry);
+  });
+
+  it('should contain: concept, conceptType, amount, and date', function (done) {
     entry.findOne({concept: 'Income test'})
       .exec(function(err, doc) {
         expect(doc.concept).to.equal('Income test');
+        expect(doc.conceptType).to.equal('I');
+        expect(doc.amount).to.equal(3000);
         expect(doc.date).to.deep.equal(new Date(currentDate));
         done();
       });
   });
 
-  it('should contain: concept, conceptType, amount, and date', function (done) {
+  it('should contain a valid Concept Type', function (done) {
 
     var badEntry = { 
-      concept: 'Ingreso erroneo',
+      concept: 'Bad Concept Type',
       conceptType: 'O',
       amount: '3000',
       date: Date.now()
