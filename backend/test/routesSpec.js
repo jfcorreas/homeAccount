@@ -60,6 +60,23 @@ describe('Routing', function() {
 				});
 		});
 
+		it('should remove an income by id', function(done) {
+			request(config.apidb.url)
+				.del('/entries/' + currentEntryId)
+				.end(function(err, res) {
+					if (err) { throw err; }
+					res.status.should.equal(200);
+					res.body.ok.should.equal(1);
+					done();
+				});
+			request(config.apidb.url)
+				.get('/entries/' + currentEntryId)
+				.end(function(err, res) {
+					if (err) { throw err; }
+					res.status.should.equal(404);
+				});				
+		});
+
 		after(function () {
     		db.connection.close();
   		}); 
