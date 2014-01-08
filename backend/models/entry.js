@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var EntrySchema = new mongoose.Schema({
 	concept: {
 		type: String,
-		required: true,
+		required: true
 	},
 	conceptType: {
 		type: String,

@@ -44,10 +44,9 @@ describe('Routing', function() {
 		  });
 		});		
 
-		it('should find an income by id', function(done) {
+		it('should find an entry by id', function(done) {
 			request(config.apidb.url)
 				.get('/entries/' + currentEntryId)
-//				.send(currentEntryId)
 				.end(function(err, res) {
 					if (err) { throw err; }
 					res.status.should.equal(200);
@@ -60,21 +59,50 @@ describe('Routing', function() {
 				});
 		});
 
-		it('should remove an income by id', function(done) {
+		it('should save an entry', function(done) {
+			var newEntry = { 
+			    concept: 'Income test 2',
+			    conceptType: 'I',
+			    amount: '30',
+			    date: currentDate
+			};
+			request(config.apidb.url)
+				.post('/entries')
+				.send(newEntry)
+				.end(function(err, res) {
+					if (err) { throw err; }
+					res.status.should.equal(200);
+					res.body.ok.should.equal(1);
+					res.body.should.have.property('entryId');
+					request(config.apidb.url)
+						.get('/entries/' + res.body.entryId)
+						.end(function(err, res) {
+							if (err) { throw err; }
+							res.status.should.equal(200);
+							res.body.concept.should.equal('Income test 2');
+							res.body.conceptType.should.equal('I');
+							res.body.amount.should.equal(30);
+							new Date(res.body.date).should.deep.equal(new Date(currentDate));	
+							done();						
+					});	
+				});
+		});
+
+		it('should remove an entry by id', function(done) {
 			request(config.apidb.url)
 				.del('/entries/' + currentEntryId)
 				.end(function(err, res) {
 					if (err) { throw err; }
 					res.status.should.equal(200);
 					res.body.ok.should.equal(1);
-					done();
-				});
-			request(config.apidb.url)
-				.get('/entries/' + currentEntryId)
-				.end(function(err, res) {
-					if (err) { throw err; }
-					res.status.should.equal(404);
-				});				
+					request(config.apidb.url)
+						.get('/entries/' + currentEntryId)
+						.end(function(err, res) {
+							if (err) { throw err; }
+							res.status.should.equal(404);
+							done();
+					});	
+				});			
 		});
 
 		after(function () {

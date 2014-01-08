@@ -18,6 +18,24 @@ module.exports = function(app){
 		});
 	});
 
+	app.post('/apidb/entries', function(req, res) {
+		Entry.create(req.body, function(err, doc) {
+			res.header('Content-Type', 'application/json');
+			if (err) {
+				if (err.name === 'ValidationError') {
+					return res.send(Object.keys(err.errors).map(function(errField) {
+						return err.errors[errField].message;
+					}).join('. '), 406);
+				} else {						
+					throw (err);
+				}
+				return;
+			}
+			
+			return res.send('{"ok": 1, "entryId": "' + doc._id + '"}', 200);
+		});
+	});
+
 	app.del('/apidb/entries/:id', function (req, res){
 		Entry.remove(req.params.id, function (err) {
 			if (err) { throw (err); }
