@@ -11,7 +11,7 @@ var EntrySchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		uppercase: true,
-		'enum': ['I','E']	// Income, Expense
+		enum: ['I','E']	// Income, Expense
 	},
 	amount: {
 		type: Number,

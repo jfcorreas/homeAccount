@@ -25,7 +25,7 @@ describe('Models', function () {
       var oneEntry = { 
         concept: 'Income test',
         conceptType: 'I',
-        amount: '3000',
+        amount: 3000,
         date: currentDate
       };
       entry.create(oneEntry, function(err, doc) {
@@ -61,7 +61,7 @@ describe('Models', function () {
       var badEntry = { 
         concept: 'Bad Concept Type',
         conceptType: 'O',
-        amount: '3000',
+        amount: 3000,
         date: Date.now()
       };
 

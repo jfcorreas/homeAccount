@@ -27,7 +27,7 @@ describe('Routing', function() {
 		  var oneEntry = { 
 		    concept: 'Income test',
 		    conceptType: 'I',
-		    amount: '3000',
+		    amount: 3000,
 		    date: currentDate
 		  };
 		  entry.create(oneEntry, function(err, doc) {
@@ -63,7 +63,7 @@ describe('Routing', function() {
 			var newEntry = { 
 			    concept: 'Income test 2',
 			    conceptType: 'I',
-			    amount: '30',
+			    amount: 30,
 			    date: currentDate
 			};
 			request(config.apidb.url)
@@ -87,6 +87,48 @@ describe('Routing', function() {
 					});	
 				});
 		});
+
+		it('should update an entry', function(done) {
+			var updatedEntry = { 
+			    concept: 'Income test Updated',
+			    amount: 301
+			};			
+
+			request(config.apidb.url)
+				.put('/entries/' + currentEntryId)
+				.send(updatedEntry)
+				.end(function(err, res) {
+					if (err) { throw err; }
+					res.status.should.equal(200);
+					res.body.ok.should.equal(1);
+					res.body.entriesUpdated.should.equal(1);
+					request(config.apidb.url)
+						.get('/entries/' + currentEntryId)
+						.end(function(err, res) {
+							if (err) { throw err; }
+							res.body.concept.should.equal('Income test Updated');
+							res.body.conceptType.should.equal('I');
+							res.body.amount.should.equal(301);
+							new Date(res.body.date).should.deep.equal(new Date(currentDate));
+							done();
+					});						
+			});
+		});
+
+		it('should fail updating a bad property in an entry', function(done) {
+			var updatedEntry = {
+		    	conceptType: 'BAD',
+		    	amount: 301
+			};			
+			request(config.apidb.url)
+				.put('/entries/' + currentEntryId)
+				.send(updatedEntry)
+				.end(function(err, res) {
+					if (err) { throw err; }
+					res.status.should.equal(406);
+					done();
+			});
+		});		
 
 		it('should remove an entry by id', function(done) {
 			request(config.apidb.url)

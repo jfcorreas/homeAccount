@@ -7,6 +7,27 @@
 		| Acceder a un apunte existente
 		· Buscar apuntes según criterios: tipo, importe o fecha
 		| Eliminar un apunte existente
-· Asociar un apunte con distintas categorias y/o miembros de la casa
+· Asignar un apunte con distintas categorías
+	· Crear una nueva categoría (sólo nombre)
+	· Eliminar una categoría existente
+	· Establecer relaciones jerárquicas entre categorías
+	· No permitir dos categorías con mismo nombre y con el mismo padre
+	· Actualizar la jerarquía de una categoría existente 
+	· Acceder a una categoría existente
+	· Asignar una categoría a un apunte
+· Asociar un apunte con distintos miembros de la casa
+	· Crear un nuevo miembro (sólo nombre)
+	· Eliminar un miembro existente (si no tiene apuntes asignados)
+	· Permitir la agrupación de miembros de la casa
+		· Crear un nuevo grupo (sólo nombre)
+		· Asignar un miembro a un grupo
+			· Un miembro puede pertenecer de 0 a N grupos
+		· Desasignar un miembro de un grupo
+		· Obtener los miembros pertenecientes a un grupo
+		· Eliminar un grupo (si no tiene miembros ni apuntes asignados)
+	· Asignar un miembro o grupo a un apunte
 · Explotación de datos mediante tablas y/o gráficas
 	· Calcular el balance contable mensual
+	· Filtrado de datos por categorías
+		· Se mostrarán los datos de la categoría y de todas sus subcategorías (recursivamente)
+	· Filtrado de datos por miembros o grupos de miembros
