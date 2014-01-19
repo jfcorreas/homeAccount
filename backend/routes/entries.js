@@ -7,6 +7,18 @@ var Entry = require('../models/entry');
 var underscore = require('underscore');
 
 module.exports = function(app){
+	app.get('/apidb/entries/', function (req, res){
+		Entry.find({}, function (err, entries) {
+			if (err) { throw (err); }
+			res.header('Content-Type', 'application/json');
+			if (entries) {
+	  			return res.send(entries, 200);
+			} else {
+	  			return res.send('{"error": "Entry ID not found"}', 404);
+			}
+		});
+	});
+
 	app.get('/apidb/entries/:id', function (req, res){
 		Entry.findById(req.params.id, function (err, entry) {
 			if (err) { throw (err); }
@@ -17,7 +29,7 @@ module.exports = function(app){
 	  			return res.send('{"error": "Entry ID not found"}', 404);
 			}
 		});
-	});
+	});	
 
 	app.post('/apidb/entries', function(req, res) {
 		Entry.create(req.body, function(err, entry) {

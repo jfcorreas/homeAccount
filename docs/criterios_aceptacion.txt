@@ -3,9 +3,10 @@
 	| El apunte debe contener: concepto o descripción, tipo, importe y fecha
 	| Persistencia del apunte en BBDD
 		| Guardar un nuevo apunte
-		· Actualizar un apunte existente
-		| Acceder a un apunte existente
-		· Buscar apuntes según criterios: tipo, importe o fecha
+		| Recuperar un apunte almacenado
+		| Actualizar un apunte almacenado
+		| Recuperar todos los apuntes almacenados
+		· Recuperar apuntes según criterios: tipo, importe o fecha
 		| Eliminar un apunte existente
 · Asignar un apunte con distintas categorías
 	· Crear una nueva categoría (sólo nombre)
