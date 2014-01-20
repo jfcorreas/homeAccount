@@ -7,14 +7,27 @@ var Entry = require('../models/entry');
 var underscore = require('underscore');
 
 module.exports = function(app){
-	app.get('/apidb/entries/', function (req, res){
-		Entry.find({}, function (err, entries) {
+	app.get('/apidb/entries', function (req, res){
+		var filter = {};
+		if (req.query.inidate && req.query.enddate) {
+			filter = {"date": { "$gte": new Date(req.query.inidate), 
+								"$lte": new Date(req.query.enddate) }};
+		}
+		if (req.query.ctype) {
+			underscore.extend(filter, {"conceptType": req.query.ctype});
+		}
+		if (req.query.iniamount && req.query.endamount) {
+			underscore.extend(filter, 
+								{"amount": { "$gte": req.query.iniamount, 
+											 "$lte": req.query.endamount }});
+		}
+		Entry.find(filter, function (err, entries) {
 			if (err) { throw (err); }
 			res.header('Content-Type', 'application/json');
 			if (entries) {
 	  			return res.send(entries, 200);
 			} else {
-	  			return res.send('{"error": "Entry ID not found"}', 404);
+	  			return res.send('{"error": "No entries found"}', 404);
 			}
 		});
 	});

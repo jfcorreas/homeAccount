@@ -11,8 +11,10 @@ var mongoose = require('mongoose'),
 describe('Routing', function() {
 
 	describe('Entry', function() {
-		var firstDate = Date.now();
+		var firstDate = new Date("2014/01/01");
+		var secondDate, thirdDate, fourthDate;
 		var firstEntryId = null;
+		var secondEntryId, thirdEntryId, fourthEntryId;
 		var db = null;
 
 		function generateTestEntry(concept, conceptType, amount, date) {
@@ -31,6 +33,30 @@ describe('Routing', function() {
 
 		  	return oneEntry;
 		};
+
+		function generateSecondaryEntries() {
+			secondDate = new Date("2014/2/7");
+			secondEntryId = null;
+		  	entry.create(generateTestEntry('Income test 2', 'I', 30, secondDate),
+		  	  function(err, doc) {
+		  		if (err) { throw err; }
+		    	secondEntryId = doc._id;
+		  	});			
+			thirdEntryId = null;
+			thirdDate = new Date("2014/1/17");
+		  	entry.create(generateTestEntry('Expense test 3', 'E', 50, thirdDate),
+		  	  function(err, doc) {
+		  		if (err) { throw err; }
+		    	thirdEntryId = doc._id;
+		  	});
+		  	fourthEntryId = null;
+			fourthDate = new Date("2014/1/31");
+		  	entry.create(generateTestEntry('Expense test 4', 'E', 150, fourthDate),
+		  	  function(err, doc) {
+		  		if (err) { throw err; }
+		    	fourthEntryId = doc._id;
+		  	});		
+		}
 
 		before(function (done) {
 		    db = mongoose.connect(config.dbtest.mongodb);
@@ -68,19 +94,13 @@ describe('Routing', function() {
 		});
 
 		it('should get all entries', function(done) {
-			var secondDate = Date.now();
-			var secondEntryId = null;
-		  	entry.create(generateTestEntry('Income test 2', 'I', 30, secondDate),
-		  	  function(err, doc) {
-		  		if (err) { throw err; }
-		    	secondEntryId = doc._id;
-		  	});				
+			generateSecondaryEntries();				
 			request(config.apidb.url)
 				.get('/entries/')
 				.end(function(err, res) {
 					if (err) { throw err; }
 					res.status.should.equal(200);
-					res.body.length.should.equal(2);
+					res.body.length.should.equal(4);
 					res.body[0].should.have.property('_id');
 					res.body[0].concept.should.equal('Income test');
 					res.body[0].conceptType.should.equal('I');
@@ -95,9 +115,80 @@ describe('Routing', function() {
 				});
 		});		
 
+		it('should get entries filtered by date', function(done) {
+  			generateSecondaryEntries();
+			request(config.apidb.url)
+				.get('/entries?inidate=2014/01/01&enddate=2014/01/31') 
+				.end(function(err, res) {
+					if (err) { throw err; }
+					res.status.should.equal(200);
+					res.body.length.should.equal(3);
+					res.body[0].should.have.property('_id');
+					res.body[0].concept.should.equal('Income test');
+					res.body[0].conceptType.should.equal('I');
+					res.body[0].amount.should.equal(3000);
+					new Date(res.body[0].date).should.deep.equal(new Date(firstDate));
+					res.body[1].should.have.property('_id');
+					res.body[1].concept.should.equal('Expense test 3');
+					res.body[1].conceptType.should.equal('E');
+					res.body[1].amount.should.equal(50);
+					new Date(res.body[1].date).should.deep.equal(new Date(thirdDate));	
+					res.body[2].should.have.property('_id');
+					res.body[2].concept.should.equal('Expense test 4');
+					res.body[2].conceptType.should.equal('E');
+					res.body[2].amount.should.equal(150);
+					new Date(res.body[2].date).should.deep.equal(new Date(fourthDate));				
+					done();
+				});
+		});
+
+		it('should get entries filtered by conceptType', function(done) {
+  			generateSecondaryEntries();
+			request(config.apidb.url)
+				.get('/entries?ctype=E&inidate=2014/01/01&enddate=2014/01/31') 
+				.end(function(err, res) {
+					if (err) { throw err; }
+					res.status.should.equal(200);
+					res.body.length.should.equal(2);
+					res.body[0].should.have.property('_id');
+					res.body[0].concept.should.equal('Expense test 3');
+					res.body[0].conceptType.should.equal('E');
+					res.body[0].amount.should.equal(50);
+					new Date(res.body[0].date).should.deep.equal(new Date(thirdDate));
+					res.body[1].should.have.property('_id');
+					res.body[1].concept.should.equal('Expense test 4');
+					res.body[1].conceptType.should.equal('E');
+					res.body[1].amount.should.equal(150);
+					new Date(res.body[1].date).should.deep.equal(new Date(fourthDate));				
+					done();
+				});
+		});
+
+		it('should get entries filtered by amount', function(done) {
+  			generateSecondaryEntries();
+			request(config.apidb.url)
+				.get('/entries?iniamount=150&endamount=3000') 
+				.end(function(err, res) {
+					if (err) { throw err; }
+					res.status.should.equal(200);
+					res.body.length.should.equal(2);
+					res.body[0].should.have.property('_id');
+					res.body[0].concept.should.equal('Income test');
+					res.body[0].conceptType.should.equal('I');
+					res.body[0].amount.should.equal(3000);
+					new Date(res.body[0].date).should.deep.equal(new Date(firstDate));
+					res.body[1].should.have.property('_id');
+					res.body[1].concept.should.equal('Expense test 4');
+					res.body[1].conceptType.should.equal('E');
+					res.body[1].amount.should.equal(150);
+					new Date(res.body[1].date).should.deep.equal(new Date(fourthDate));				
+					done();
+				});
+		});
+
 		it('should save an entry', function(done) {
-			var secondDate = Date.now();
-			var newEntry = generateTestEntry('Income test 2', 'I', 30, secondDate);				
+			var newDate = new Date("2014/10/27");
+			var newEntry = generateTestEntry('Income test 2', 'I', 30, newDate);				
 
 			request(config.apidb.url)
 				.post('/entries')
@@ -115,7 +206,7 @@ describe('Routing', function() {
 							res.body.concept.should.equal('Income test 2');
 							res.body.conceptType.should.equal('I');
 							res.body.amount.should.equal(30);
-							new Date(res.body.date).should.deep.equal(new Date(secondDate));	
+							new Date(res.body.date).should.deep.equal(new Date(newDate));	
 							done();						
 					});	
 				});

@@ -6,7 +6,7 @@
 		| Recuperar un apunte almacenado
 		| Actualizar un apunte almacenado
 		| Recuperar todos los apuntes almacenados
-		· Recuperar apuntes según criterios: tipo, importe o fecha
+		| Recuperar apuntes según criterios: tipo, importe o fecha
 		| Eliminar un apunte existente
 · Asignar un apunte con distintas categorías
 	· Crear una nueva categoría (sólo nombre)
