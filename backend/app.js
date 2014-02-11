@@ -11,11 +11,26 @@ var app = module.exports = express.createServer();
 
 var db = null;
 
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:9000');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+};
+
 // Configuration
 
 app.configure(function(){
   //app.set('views', __dirname + '/views');
   //app.set('view engine', 'jade');
+  app.use(allowCrossDomain);
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
