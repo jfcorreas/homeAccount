@@ -24,6 +24,11 @@ module.exports = function(config) {
     // list of files / patterns to exclude
     exclude: [],
 
+    // use dolts reporter, as travis terminal does not support escaping sequences
+    // possible values: 'dots', 'progress', 'junit', 'teamcity'
+    // CLI --reporters progress
+    reporters : ['spec'],
+    
     // web server port
     port: 8080,
 
@@ -33,7 +38,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // Start these browsers, currently available:
