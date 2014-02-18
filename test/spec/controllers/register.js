@@ -20,7 +20,4 @@ describe('Controller: entriesCtrl', function () {
     expect(scope.awesomeThings.length).toBe(3);
   });
 
-    it('should attach a list of awesomeThings to the scope 2', function () {
-    expect(scope.awesomeThings.length).toBe(3);
-  });
 });

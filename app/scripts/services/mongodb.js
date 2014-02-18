@@ -13,19 +13,31 @@ mongodb.factory('mongoService', function($http, $log, DB_CONFIG) {
       angular.extend(this, data);
     };
 
+    Resource.find = function(objectId) {
+      return $http.get(collectionUrl+'/'+objectId)
+        .success(function(response) {
+          return new Resource(response.data);
+        })
+        .error(function (error) {
+          return {error: 'Find Error: ' + error};
+        });
+    };
+
     Resource.query = function(params) {
       return $http.get(collectionUrl, {
-        //params: angular.extend({q:JSON.stringify({} || params)}, defaultParams)
-        params: defaultParams
-      }).then(function(response) {
+          //params: angular.extend({q:JSON.stringify({} || params)}, defaultParams)
+          params: defaultParams
+        })
+        .success(function(response) {
           var result = [];
           angular.forEach(response.data, function(value, key){
             result[key] = new Resource(value);
           });
           return result;
-      }, function (error) {
-          return {error: 'Error en query'};
-      });
+        })
+        .error(function (error) {
+          return {error: 'Query Error: ' + error};
+        });
     };
 
     return Resource;
