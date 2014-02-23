@@ -50,7 +50,7 @@ app.configure('production', function(){
 // Routes
 
 //app.get('/', routes.index);
-require('./routes/entries')(app);
+require('./routes/mongoAPI')(app);
 
 app.listen(3000, function(){
   console.log("HomeAccount Backend listening on port %d in %s mode", app.address().port, app.settings.env);

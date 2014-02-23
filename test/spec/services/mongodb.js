@@ -40,7 +40,7 @@ describe('Service: mongoService', function () {
     $httpBackend.flush();    
   });
 
-  it('should query all objects of a collection', function () {
+  it('should query objects of a collection', function () {
     $httpBackend.whenGET(collectionUrl + '?').respond([{name: 'Pawel'}, {name: 'Peter'}]);
     var Resource = mongoService(collectionName);
     Resource.query().success(function(results){

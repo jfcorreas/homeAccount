@@ -8,9 +8,9 @@ var expect = require('chai').expect,
 var mongoose = require('mongoose'),
 	entry = require('../models/entry');    
 
-describe('Routing', function() {
+describe('Mongodb API', function() {
 
-	describe('Entry', function() {
+	describe('Entries Collection', function() {
 		var firstDate = new Date("2014/01/01");
 		var secondDate, thirdDate, fourthDate;
 		var firstEntryId = null;
@@ -118,7 +118,7 @@ describe('Routing', function() {
 		it('should get entries filtered by date', function(done) {
   			generateSecondaryEntries();
 			request(config.apidb.url)
-				.get('/entries?inidate=2014/01/01&enddate=2014/01/31') 
+				.get('/entries?limitDate={"field":"date","start":"2014/01/01","end":"2014/01/31"}') 
 				.end(function(err, res) {
 					if (err) { throw err; }
 					res.status.should.equal(200);
@@ -145,7 +145,8 @@ describe('Routing', function() {
 		it('should get entries filtered by conceptType', function(done) {
   			generateSecondaryEntries();
 			request(config.apidb.url)
-				.get('/entries?ctype=E&inidate=2014/01/01&enddate=2014/01/31') 
+				.get('/entries?query={"conceptType":"E"}' + 
+							'&limitDate={"field":"date","start":"2014/01/01","end":"2014/01/31"}') 
 				.end(function(err, res) {
 					if (err) { throw err; }
 					res.status.should.equal(200);
@@ -167,7 +168,7 @@ describe('Routing', function() {
 		it('should get entries filtered by amount', function(done) {
   			generateSecondaryEntries();
 			request(config.apidb.url)
-				.get('/entries?iniamount=150&endamount=3000') 
+				.get('/entries?limitNumber={"field":"amount","start":150,"end":3000}') 
 				.end(function(err, res) {
 					if (err) { throw err; }
 					res.status.should.equal(200);
@@ -197,9 +198,9 @@ describe('Routing', function() {
 					if (err) { throw err; }
 					res.status.should.equal(200);
 					res.body.ok.should.equal(1);
-					res.body.should.have.property('entryId');
+					res.body.should.have.property('objectId');
 					request(config.apidb.url)
-						.get('/entries/' + res.body.entryId)
+						.get('/entries/' + res.body.objectId)
 						.end(function(err, res) {
 							if (err) { throw err; }
 							res.status.should.equal(200);
@@ -225,7 +226,7 @@ describe('Routing', function() {
 					if (err) { throw err; }
 					res.status.should.equal(200);
 					res.body.ok.should.equal(1);
-					res.body.entriesUpdated.should.equal(1);
+					res.body.documentsUpdated.should.equal(1);
 					request(config.apidb.url)
 						.get('/entries/' + firstEntryId)
 						.end(function(err, res) {

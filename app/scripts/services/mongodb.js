@@ -8,7 +8,6 @@ mongodb.factory('mongoService', function($http, $log, DB_CONFIG) {
     var collectionUrl = DB_CONFIG.server + DB_CONFIG.baseUrl + 
                         DB_CONFIG.dbName +'/'+ collectionName;
 
-    var defaultParams = {};
     var Resource = function (data) {
       angular.extend(this, data);
     };
@@ -25,8 +24,7 @@ mongodb.factory('mongoService', function($http, $log, DB_CONFIG) {
 
     Resource.query = function(params) {
       return $http.get(collectionUrl, {
-          //params: angular.extend({q:JSON.stringify({} || params)}, defaultParams)
-          params: defaultParams
+          params: (params || {})
         })
         .success(function(response) {
           var result = [];
