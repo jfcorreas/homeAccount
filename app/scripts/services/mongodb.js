@@ -42,6 +42,16 @@ mongodb.factory('mongoService', function($http, $log, DB_CONFIG) {
         });
     };
 
+    Resource.save = function(object) {
+      return $http.post(collectionUrl, object)
+        .success(function(response) {
+          return response.data;
+        })
+        .error(function (error) {
+          return {error: 'Save Error: ' + error};
+        });
+    };
+
     return Resource;
   };
 });
