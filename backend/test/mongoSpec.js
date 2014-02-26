@@ -35,7 +35,7 @@ describe('Mongodb API', function() {
 		};
 
 		function generateSecondaryEntries() {
-			secondDate = new Date("2014/2/7");
+			secondDate = new Date("2014/02/07");
 			secondEntryId = null;
 		  	entry.create(generateTestEntry('Income test 2', 'I', 30, secondDate),
 		  	  function(err, doc) {

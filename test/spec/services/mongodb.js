@@ -5,16 +5,6 @@ describe('Service: mongoService', function () {
   var $http, $httpBackend, mongoService, collectionUrl;
   var collectionName = 'collectionTest';
   beforeEach(module('homeAccountApp'));
-  /*beforeEach(inject(function(_DB_CONFIG_) {
-    collectionUrl = _DB_CONFIG_.server + _DB_CONFIG_.baseUrl + 
-                    _DB_CONFIG_.dbName +'/'+ collectionName;
-  }));
-  //beforeEach(module('test-with-http-backend'));
-  beforeEach(inject(function(_$httpBackend_) {
-    //$http = _$http_;
-    $httpBackend = _$httpBackend_;
-  }));*/
-
   beforeEach(module('mongodb'));
   beforeEach(inject(function (_mongoService_, _$http_, _$httpBackend_, _DB_CONFIG_) {
     mongoService = _mongoService_;
@@ -31,7 +21,7 @@ describe('Service: mongoService', function () {
 
   it('should find an object by id', function () {
     var objectId = 'id_12345';
-    $httpBackend.whenGET(collectionUrl + '/' + objectId).respond({_id: objectId, name: 'test'});
+    $httpBackend.whenGET(collectionUrl + '/' + objectId).respond(200, {_id: objectId, name: 'test'});
     var Resource = mongoService(collectionName);
     Resource.find(objectId).success(function(object){
       expect(object._id).toBe(objectId);
@@ -41,13 +31,31 @@ describe('Service: mongoService', function () {
   });
 
   it('should query objects of a collection', function () {
-    $httpBackend.whenGET(collectionUrl + '?').respond([{name: 'Pawel'}, {name: 'Peter'}]);
+    $httpBackend.whenGET(collectionUrl + '?').respond(200, [{name: 'Test'}, {name: 'Test2'}]);
     var Resource = mongoService(collectionName);
     Resource.query().success(function(results){
       expect(results.length).toEqual(2);
     });
     $httpBackend.flush();    
   });
+
+  it('should query filtered objects of a collection', function () {
+    var params = {query: {name:"Test"},
+                  limitDate: {field:"date",start:"2014/01/01",end:"2014/01/31"},
+                  limitNumber: {field:"amount", start:100, end:3000}};
+
+    $httpBackend.whenGET(collectionUrl + '?' + 
+      'limitDate=' + encodeURI(JSON.stringify(params.limitDate)).replace(/\//g,'%2F') +
+      '&limitNumber=' + encodeURI(JSON.stringify(params.limitNumber)) +
+      '&query=' + encodeURI(JSON.stringify(params.query)))
+      .respond(200, [{name: 'Test'}, {name: 'Test2'}]);
+
+    var Resource = mongoService(collectionName);
+    Resource.query(params).success(function(results){
+      expect(results.length).toEqual(2);
+    });
+    $httpBackend.flush();    
+  });  
 
   afterEach(function() {
     $httpBackend.verifyNoOutstandingExpectation();

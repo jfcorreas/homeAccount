@@ -23,9 +23,13 @@ mongodb.factory('mongoService', function($http, $log, DB_CONFIG) {
     };
 
     Resource.query = function(params) {
-      return $http.get(collectionUrl, {
-          params: (params || {})
-        })
+      var _params = {};
+      if (params) {
+        angular.extend(_params, {limitDate: JSON.stringify(params.limitDate)});
+        angular.extend(_params, {limitNumber: JSON.stringify(params.limitNumber)});
+        angular.extend(_params, {query: JSON.stringify(params.query)});
+      }
+      return $http.get(collectionUrl, {params: _params})
         .success(function(response) {
           var result = [];
           angular.forEach(response.data, function(value, key){
