@@ -34,6 +34,7 @@ describe('Service: mongoService', function () {
     $httpBackend.whenGET(collectionUrl + '?').respond(200, [{name: 'Test'}, {name: 'Test2'}]);
 
     Resource.query().success(function(results){
+      expect(results instanceof Array).toBe(true);
       expect(results.length).toEqual(2);
     });
     $httpBackend.flush();    
@@ -51,6 +52,7 @@ describe('Service: mongoService', function () {
       .respond(200, [{name: 'Test'}, {name: 'Test2'}]);
 
     Resource.query(params).success(function(results){
+      expect(results instanceof Array).toBe(true);
       expect(results.length).toEqual(2);
     });
     $httpBackend.flush();    
@@ -74,7 +76,7 @@ describe('Service: mongoService', function () {
     var object = {name: 'Test', surname: 'duplicated'};
 
     $httpBackend.whenPOST(collectionUrl, object)
-      .respond(409, {error: 'Duplicated Document'});
+      .respond(500, {error: 'Duplicated Document'});
 
     Resource.save(object).success(function(result){
       expect(result.error).toEqual('Duplicated Document');
@@ -92,6 +94,19 @@ describe('Service: mongoService', function () {
     Resource.update(object).success(function(result){
       expect(result.ok).toEqual(1);
       expect(result.documentsUpdated).toEqual(1);
+    });
+    $httpBackend.flush();    
+  });
+
+  it('should delete an object in a collection', function () {
+    var objectId = 'id_12345';
+    var object = {name: 'Test', surname: 'delete', _id: objectId};
+
+    $httpBackend.whenDELETE(collectionUrl + '/' + object._id)
+      .respond(200, {ok: 1});
+
+    Resource.delete(object).success(function(result){
+      expect(result.ok).toEqual(1);
     });
     $httpBackend.flush();    
   });

@@ -62,6 +62,16 @@ mongodb.factory('mongoService', function($http, $log, DB_CONFIG) {
         });
     };    
 
+    Resource.delete = function(object) {
+      return $http.delete(collectionUrl + '/' + object._id)
+        .success(function(response) {
+          return response.data;
+        })
+        .error(function (error) {
+          return {error: 'Delete Error: ' + error};
+        });
+    };
+
     return Resource;
   };
 });
