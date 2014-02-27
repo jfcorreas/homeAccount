@@ -52,6 +52,16 @@ mongodb.factory('mongoService', function($http, $log, DB_CONFIG) {
         });
     };
 
+    Resource.update = function(object) {
+      return $http.put(collectionUrl + '/' + object._id, object)
+        .success(function(response) {
+          return response.data;
+        })
+        .error(function (error) {
+          return {error: 'Update Error: ' + error};
+        });
+    };    
+
     return Resource;
   };
 });

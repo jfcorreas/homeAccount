@@ -58,13 +58,40 @@ describe('Service: mongoService', function () {
 
   it('should save an object in a collection', function () {
     var object = {name: 'Test', surname: 'save'};
+    var objectId = 'id_12345';
 
     $httpBackend.whenPOST(collectionUrl, object)
-      .respond(200, {ok: 1, objectId:'test12345'});
+      .respond(200, {ok: 1, objectId: objectId});
 
     Resource.save(object).success(function(result){
       expect(result.ok).toEqual(1);
-      expect(result.objectId).toEqual('test12345');
+      expect(result.objectId).toEqual(objectId);
+    });
+    $httpBackend.flush();    
+  });
+
+  it('should fail saving a duplicated object in a collection', function () {
+    var object = {name: 'Test', surname: 'duplicated'};
+
+    $httpBackend.whenPOST(collectionUrl, object)
+      .respond(409, {error: 'Duplicated Document'});
+
+    Resource.save(object).success(function(result){
+      expect(result.error).toEqual('Duplicated Document');
+    });
+    $httpBackend.flush();    
+  });
+
+  it('should update an object in a collection', function () {
+    var objectId = 'id_12345';
+    var object = {name: 'Test', surname: 'update', _id: objectId};
+
+    $httpBackend.whenPUT(collectionUrl + '/' + object._id, object)
+      .respond(200, {ok: 1, documentsUpdated: 1});
+
+    Resource.update(object).success(function(result){
+      expect(result.ok).toEqual(1);
+      expect(result.documentsUpdated).toEqual(1);
     });
     $httpBackend.flush();    
   });
