@@ -23,4 +23,12 @@ describe('Controller: entriesCtrl', function () {
     expect(scope.workDate).toEqual(currentDate);
   });
 
+  it('should increment workDate', function () {
+    var currentDate = new Date();
+    currentDate.setHours(0,0,0,0);
+
+    scope.incrementWorkDate();
+    expect(scope.workDate).toEqual(currentDate.getDate()+1);
+  });
+
 });
