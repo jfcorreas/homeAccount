@@ -8,7 +8,7 @@ describe('Controller: entriesCtrl', function () {
   var entriesCtrl,
     scope;
 
-  // Initialize the controller and a mock scope
+  // Initialize the controller, a mock scope and mock services
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
     entriesCtrl = $controller('entriesCtrl', {
@@ -16,8 +16,11 @@ describe('Controller: entriesCtrl', function () {
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
+  it('should initialize workDate', function () {
+    var currentDate = new Date();
+    currentDate.setHours(0,0,0,0);
+
+    expect(scope.workDate).toEqual(currentDate);
   });
 
 });

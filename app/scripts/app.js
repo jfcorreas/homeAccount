@@ -1,6 +1,6 @@
 'use strict';
 
-var homeAccountApp = angular.module('homeAccountApp', ['ngRoute', 'registerControllers']);
+var homeAccountApp = angular.module('homeAccountApp', ['ngRoute', 'entryControllers']);
 
 homeAccountApp.config(['$routeProvider', 
   function ($routeProvider) {
