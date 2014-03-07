@@ -4,16 +4,21 @@ describe('Service: mongoService', function () {
 
   var $http, $httpBackend, mongoService, collectionUrl, Resource;
   var collectionName = 'collectionTest';
-  beforeEach(module('homeAccountApp'));
-  beforeEach(module('mongodb'));
-  beforeEach(inject(function (_mongoService_, _$http_, _$httpBackend_, _DB_CONFIG_) {
-    mongoService = _mongoService_;
-    $http = _$http_;
-    $httpBackend = _$httpBackend_;
-    collectionUrl = _DB_CONFIG_.server + _DB_CONFIG_.baseUrl + 
-                    _DB_CONFIG_.dbName +'/'+ collectionName; 
-    Resource = mongoService(collectionName);   
-  }));
+
+  beforeEach(function() {
+    module('homeAccountApp');
+    module('mongodb');
+
+    inject(function (_mongoService_, _$http_, _$httpBackend_, _DB_CONFIG_) {
+      mongoService = _mongoService_;
+      $http = _$http_;
+      $httpBackend = _$httpBackend_;
+      collectionUrl = _DB_CONFIG_.server + _DB_CONFIG_.baseUrl + 
+                      _DB_CONFIG_.dbName +'/'+ collectionName;   
+    });
+
+    Resource = mongoService(collectionName);
+  });
 
   it('should return a Resource with a query function', function () {
     expect(typeof Resource.query).toBe("function");

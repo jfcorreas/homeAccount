@@ -31,3 +31,4 @@ entryControllers.controller('entriesCtrl', ['$scope', 'Entries',
       $scope.entries = entries;
     });
 }]);
+

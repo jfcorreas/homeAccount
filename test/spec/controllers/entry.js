@@ -2,48 +2,58 @@
 
 describe('Controller: entriesCtrl', function () {
 
-  // load the controller's module
-  beforeEach(module('homeAccountApp'));
+  var entriesCtrl, $scope, $timeout;
+  var entriesServiceMock;
 
-  var entriesCtrl,
-    scope;
+  beforeEach(function() {
+    entriesServiceMock = jasmine.createSpyObj('Entries', ['query']);
+    module('homeAccountApp');
 
-  // Initialize the controller, a mock scope and mock services
-  beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
-    entriesCtrl = $controller('entriesCtrl', {
-      $scope: scope
+    inject(function ($controller, $rootScope, $q, _$timeout_) {
+      $scope = $rootScope.$new();
+      entriesServiceMock.query.andReturn($q.when([{name: 'test'}]));
+      $timeout = _$timeout_;
+      entriesCtrl = $controller('entriesCtrl', {
+        $scope: $scope,
+        Entries: entriesServiceMock
+      });
     });
-  }));
+  });
 
   it('should initialize workDate', function () {
     var currentDate = new Date();
     currentDate.setHours(0,0,0,0);
 
-    expect(scope.workDate).toEqual(currentDate);
+    expect($scope.workDate).toEqual(currentDate);
   });
 
   it('should increment workDate', function () {
     var currentDate = new Date();
     currentDate.setHours(0,0,0,0);
 
-    scope.workDate.setDate(currentDate.getDate() - 1);
-    scope.incrementWorkDate();
-    expect(scope.workDate).toEqual(currentDate);
+    $scope.workDate.setDate(currentDate.getDate() - 1);
+    $scope.incrementWorkDate();
+    expect($scope.workDate).toEqual(currentDate);
   });
 
   it('shouldnt increment workDate if exceeds todays date', function () {
     var currentDate = new Date();
     currentDate.setHours(0,0,0,0);
 
-    scope.incrementWorkDate();
-    expect(scope.workDate).toEqual(currentDate);
+    $scope.incrementWorkDate();
+    expect($scope.workDate).toEqual(currentDate);
   });
 
   it('should initialize workEntry', function () {
-    expect(scope.workEntry.concept).toEqual('');
-    expect(scope.workEntry.conceptType).toEqual('E');
-    expect(scope.workEntry.amount).toEqual(0);
+    expect($scope.workEntry.concept).toEqual('');
+    expect($scope.workEntry.conceptType).toEqual('E');
+    expect($scope.workEntry.amount).toEqual(0);
   });
 
+  it('should initialize entries', function () {
+    expect(entriesServiceMock.query).toHaveBeenCalled();
+    expect($scope.entries).toBe(undefined);
+    $timeout.flush();
+    expect($scope.entries instanceof Array).toBe(true);
+  });
 });
