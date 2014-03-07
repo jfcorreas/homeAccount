@@ -11,10 +11,14 @@ entryControllers.controller('entriesCtrl', ['$scope', 'Entries',
     var _currentDate = new Date();
     _currentDate.setHours(0,0,0,0);
 
-    $scope.workDate = _currentDate;
+    $scope.workDate = new Date(_currentDate);
 
     $scope.incrementWorkDate = function() {
-      $scope.workDate = $scope.workDate.getDate() + 1;
+      _currentDate = new Date();
+      _currentDate.setHours(0,0,0,0);      
+      if ($scope.workDate < _currentDate){
+        $scope.workDate.setDate($scope.workDate.getDate() + 1);
+      }
     };
    
     Entries.query().then(function(entries) {

@@ -27,8 +27,17 @@ describe('Controller: entriesCtrl', function () {
     var currentDate = new Date();
     currentDate.setHours(0,0,0,0);
 
+    scope.workDate.setDate(currentDate.getDate() - 1);
     scope.incrementWorkDate();
-    expect(scope.workDate).toEqual(currentDate.getDate()+1);
+    expect(scope.workDate).toEqual(currentDate);
+  });
+
+  it('shouldnt increment workDate if exceeds today date', function () {
+    var currentDate = new Date();
+    currentDate.setHours(0,0,0,0);
+
+    scope.incrementWorkDate();
+    expect(scope.workDate).toEqual(currentDate);
   });
 
 });
