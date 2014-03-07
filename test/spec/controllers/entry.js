@@ -32,12 +32,18 @@ describe('Controller: entriesCtrl', function () {
     expect(scope.workDate).toEqual(currentDate);
   });
 
-  it('shouldnt increment workDate if exceeds today date', function () {
+  it('shouldnt increment workDate if exceeds todays date', function () {
     var currentDate = new Date();
     currentDate.setHours(0,0,0,0);
 
     scope.incrementWorkDate();
     expect(scope.workDate).toEqual(currentDate);
+  });
+
+  it('should initialize workEntry', function () {
+    expect(scope.workEntry.concept).toEqual('');
+    expect(scope.workEntry.conceptType).toEqual('E');
+    expect(scope.workEntry.amount).toEqual(0);
   });
 
 });

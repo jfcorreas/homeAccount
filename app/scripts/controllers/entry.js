@@ -13,6 +13,12 @@ entryControllers.controller('entriesCtrl', ['$scope', 'Entries',
 
     $scope.workDate = new Date(_currentDate);
 
+    $scope.workEntry = {
+      concept: '',
+      conceptType: 'E',
+      amount: 0
+    };
+
     $scope.incrementWorkDate = function() {
       _currentDate = new Date();
       _currentDate.setHours(0,0,0,0);      
