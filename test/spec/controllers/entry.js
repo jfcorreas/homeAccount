@@ -56,4 +56,15 @@ describe('Controller: entriesCtrl', function () {
     $timeout.flush();
     expect($scope.entries instanceof Array).toBe(true);
   });
+
+  it('should load entries of workDate Month', function () {
+    $scope.workDate = new Date('2014/02/14');
+    $scope.loadEntries();
+
+    var params = {limitDate: {field:'date',start:'2014/02/01', end:'2014/02/28'}};
+    expect(entriesServiceMock.query).toHaveBeenCalledWith(params);
+
+    $timeout.flush();
+    expect($scope.entries instanceof Array).toBe(true);
+  });  
 });

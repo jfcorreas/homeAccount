@@ -2,6 +2,17 @@
 
 var entryControllers = angular.module('entryControllers', ['mongodb']);
 
+var getWorkDateMonthParams = function (workDate) {
+  var monthStartDate = workDate.getFullYear() + '/' +
+     (workDate.getMonth()+1 < 10 ? '0' : '') + (workDate.getMonth()+1) + '/01';
+
+  var monthEndDate = workDate.getFullYear() + '/' +
+     (workDate.getMonth()+1 < 10 ? '0' : '') + (workDate.getMonth()+1) + '/' +
+     new Date(workDate.getFullYear(), workDate.getMonth()+1, 0).getDate();  
+       
+  return {limitDate: {field:'date',start:monthStartDate, end:monthEndDate}};
+};
+
 entryControllers.factory('Entries', function(mongoService) {
   return mongoService('entries');
 });
@@ -26,9 +37,14 @@ entryControllers.controller('entriesCtrl', ['$scope', 'Entries',
         $scope.workDate.setDate($scope.workDate.getDate() + 1);
       }
     };
-   
-    Entries.query().then(function(entries) {
-      $scope.entries = entries;
-    });
+    
+    $scope.loadEntries = function (){
+      Entries.query(getWorkDateMonthParams($scope.workDate))
+      .then(function(entries) {
+        $scope.entries = entries;
+      });
+    };
+
+    $scope.loadEntries();
 }]);
 
