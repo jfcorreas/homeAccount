@@ -41,7 +41,7 @@ entryControllers.controller('entriesCtrl', ['$scope', 'Entries',
     $scope.loadEntries = function (){
       Entries.query(getWorkDateMonthParams($scope.workDate))
       .then(function(entries) {
-        $scope.entries = entries;
+        $scope.entries = entries.data;
       });
     };
 

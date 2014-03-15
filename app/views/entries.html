@@ -1,0 +1,46 @@
+<div class="header">
+	<ul class="nav nav-pills pull-right">
+		<li class="active"><a href="#"><i class="fa fa-edit"> Registro</i></a></li>
+		<li><a href="#"><i class="fa fa-tasks"> Balance</i></a></li>
+		<li><a href="#"><i class="fa fa-bar-chart-o"> Estadísticas</i></a></li>
+	</ul>
+	<h3 class="text-muted">homeAccount</h3>
+</div>
+
+<div class="container-fuid">
+	<div class="row">
+		<datepicker ng-model='workDate' date-format='dd/MM/yyyy' 
+					label-format='dd /MMM / yyyy'
+					disable-timepicker='true' disable-clear-button='true'>
+		</datepicker>		
+		<form class="form-inline" role="form">
+			<div class="checkbox">	
+				<i class="fa fa-camera-retro fa-2x"></i>
+				<label>
+					<input type="checkbox" ng-model="workEntry.conceptType"> Ingreso
+				</label>
+			</div>
+			<div class="form-group">
+				<label class="sr-only" for="workEntryConcept">Concepto</label>
+				<input id="workEntryConcept" type="text" class="form-control" 
+				ng-model="workEntry.concept" placeholder="Introduce el Concepto">
+			</div>
+			<div class="form-group">
+				<label class="sr-only" for="workEntryAmount">Cantidad(en céntimos)</label>
+				<input  id="workEntryAmount" type="number" class="form-control"
+				ng-model="workEntry.amount" placeholder="0.0">
+			</div>
+			<button type="submit" class="btn btn-success">Guardar</button>
+		</form>
+	</div>
+</div>
+
+<div class="row marketing">
+	<pre ng-bind="workEntry | json"></pre>
+	<pre ng-bind="entries | json"></pre>
+</div>
+</div>
+
+<div class="footer">
+	<p>♥ from the Yeoman team</p>
+</div>

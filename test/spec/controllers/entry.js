@@ -36,7 +36,7 @@ describe('Controller: entriesCtrl', function () {
     expect($scope.workDate).toEqual(currentDate);
   });
 
-  it('shouldnt increment workDate if exceeds todays date', function () {
+  it('should not increment workDate if exceeds today\'s date', function () {
     var currentDate = new Date();
     currentDate.setHours(0,0,0,0);
 
@@ -57,7 +57,7 @@ describe('Controller: entriesCtrl', function () {
     expect($scope.entries instanceof Array).toBe(true);
   });
 
-  it('should load entries of workDate Month', function () {
+  it('should load entries of workDate\'s Month', function () {
     $scope.workDate = new Date('2014/02/14');
     $scope.loadEntries();
 
