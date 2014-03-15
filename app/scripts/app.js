@@ -19,7 +19,7 @@ homeAccountApp.config(function(ngQuickDateDefaultsProvider) {
   // Configure with icons from font-awesome
   return ngQuickDateDefaultsProvider.set({
     closeButtonHtml: "<i class='fa fa-times'></i>",
-    buttonIconHtml: "<i class='fa fa-calendar'></i>",
+    buttonIconHtml: "<i class='fa fa-calendar fa-lg'></i>",
     nextLinkHtml: "<i class='fa fa-chevron-right'></i>",
     prevLinkHtml: "<i class='fa fa-chevron-left'></i>",
     /* Take advantage of Sugar.js date parsing

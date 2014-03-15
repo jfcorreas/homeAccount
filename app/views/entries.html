@@ -9,15 +9,19 @@
 
 <div class="container-fuid">
 	<div class="row">
+		<button ng-click="incrementWorkDate()" ng-disabled="!canIncrementWorkDate()"
+			class="btn btn-success">
+			<i class="fa fa-plus fa-lg"></i>
+		</button>
 		<datepicker ng-model='workDate' date-format='dd/MM/yyyy' 
-					label-format='dd /MMM / yyyy'
+					label-format='dd / MMM / yyyy'
 					disable-timepicker='true' disable-clear-button='true'>
-		</datepicker>		
+		</datepicker>
 		<form class="form-inline" role="form">
 			<div class="checkbox">	
-				<i class="fa fa-camera-retro fa-2x"></i>
 				<label>
-					<input type="checkbox" ng-model="workEntry.conceptType"> Ingreso
+					<input type="checkbox" ng-true-value="I"
+						ng-false-value="E" ng-model="workEntry.conceptType"> Ingreso
 				</label>
 			</div>
 			<div class="form-group">

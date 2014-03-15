@@ -30,10 +30,17 @@ entryControllers.controller('entriesCtrl', ['$scope', 'Entries',
       amount: 0
     };
 
-    $scope.incrementWorkDate = function() {
+    $scope.canIncrementWorkDate = function() {
       _currentDate = new Date();
       _currentDate.setHours(0,0,0,0);      
       if ($scope.workDate < _currentDate){
+        return true;
+      }
+      return false;
+    };
+
+    $scope.incrementWorkDate = function() {    
+      if ($scope.canIncrementWorkDate()){
         $scope.workDate.setDate($scope.workDate.getDate() + 1);
       }
     };
