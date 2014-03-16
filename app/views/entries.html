@@ -17,24 +17,29 @@
 					label-format='dd / MMM / yyyy'
 					disable-timepicker='true' disable-clear-button='true'>
 		</datepicker>
-		<form class="form-inline" role="form">
+		<form class="form-inline" role="form" name="entryForm" novalidate>
 			<div class="checkbox">	
 				<label>
-					<input type="checkbox" ng-true-value="I"
-						ng-false-value="E" ng-model="workEntry.conceptType"> Ingreso
+					<input type="checkbox" 
+						ng-true-value="I" ng-false-value="E"
+						ng-model="workEntry.conceptType"> Ingreso
 				</label>
 			</div>
 			<div class="form-group">
 				<label class="sr-only" for="workEntryConcept">Concepto</label>
 				<input id="workEntryConcept" type="text" class="form-control" 
-				ng-model="workEntry.concept" placeholder="Introduce el Concepto">
+				ng-model="workEntry.concept" required
+				placeholder="Introduce el Concepto">
 			</div>
 			<div class="form-group">
-				<label class="sr-only" for="workEntryAmount">Cantidad(en céntimos)</label>
+				<label class="sr-only" for="workEntryAmount">Cantidad</label>
 				<input  id="workEntryAmount" type="number" class="form-control"
-				ng-model="workEntry.amount" placeholder="0.0">
+				ng-model="workEntry.amount" placeholder="0.0" min="0" max="999999" required>
 			</div>
-			<button type="submit" class="btn btn-success">Guardar</button>
+			<i class="fa fa-euro fa-lg"></i>
+			<button type="submit" class="btn btn-success" 
+				ng-disabled="!canSave()">Guardar
+			</button>
 		</form>
 	</div>
 </div>

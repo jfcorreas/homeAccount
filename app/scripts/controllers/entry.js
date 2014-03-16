@@ -27,7 +27,7 @@ entryControllers.controller('entriesCtrl', ['$scope', 'Entries',
     $scope.workEntry = {
       concept: '',
       conceptType: 'E',
-      amount: 0
+      amount: null
     };
 
     $scope.canIncrementWorkDate = function() {
@@ -53,5 +53,9 @@ entryControllers.controller('entriesCtrl', ['$scope', 'Entries',
     };
 
     $scope.loadEntries();
+
+    $scope.canSave = function () {
+      return $scope.entryForm.$dirty && $scope.entryForm.$valid;
+    };
 }]);
 
