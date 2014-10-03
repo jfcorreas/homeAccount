@@ -51,7 +51,7 @@ describe('Mongodb API', function() {
 		    db = mongoose.connect(config.dbtest.mongodb);
 		    done(); 
 		});
-/*
+
 		beforeEach(function (done) {
 		  	category.create(generateTestCategory('Category test'),
 		  	 function(err, doc) {
@@ -60,7 +60,7 @@ describe('Mongodb API', function() {
 		    	done();
 		  	});				
 		});
-*/
+
 		afterEach(function(done) {
 		  category.remove({}, function() {
 		    done();
@@ -239,16 +239,16 @@ describe('Mongodb API', function() {
 					done();
 			});
 		});		
-
+*/
 		it('should remove an category by id', function(done) {
 			request(config.apidb.url)
-				.del('/entries/' + firstCategoryId)
+				.del('/categories/' + firstCategoryId)
 				.end(function(err, res) {
 					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.ok.should.equal(1);
 					request(config.apidb.url)
-						.get('/entries/' + firstCategoryId)
+						.get('/categories/' + firstCategoryId)
 						.end(function(err, res) {
 							if (err) { done(err); }
 							res.status.should.equal(404);
@@ -256,7 +256,7 @@ describe('Mongodb API', function() {
 					});	
 				});			
 		});
-*/
+
 		after(function () {
     		db.connection.close();
   		}); 
