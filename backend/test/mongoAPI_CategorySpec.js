@@ -12,7 +12,7 @@ describe('Mongodb API', function() {
 
 	describe('Categories Collection', function() {
 		var firstCategoryId = null;
-//		var secondCategoryId, thirdCategoryId, fourthCategoryId;
+		var secondCategoryId, thirdCategoryId, fourthCategoryId;
 		var db = null;
 
 		function generateTestCategory(name) {
@@ -22,31 +22,28 @@ describe('Mongodb API', function() {
 
 		  	return oneCategory;
 		};
-/*
+
 		function generateSecondaryCategories() {
-			secondDate = new Date("2014/02/07");
 			secondCategoryId = null;
-		  	category.create(generateTestCategory('Income test 2', 'I', 30, secondDate),
+		  	category.create(generateTestCategory('Category test 2'),
 		  	  function(err, doc) {
 		  		if (err) { throw err; }
 		    	secondCategoryId = doc._id;
 		  	});			
 			thirdCategoryId = null;
-			thirdDate = new Date("2014/1/17");
-		  	category.create(generateTestCategory('Expense test 3', 'E', 50, thirdDate),
+		  	category.create(generateTestCategory('Category test 3'),
 		  	  function(err, doc) {
 		  		if (err) { throw err; }
 		    	thirdCategoryId = doc._id;
 		  	});
 		  	fourthCategoryId = null;
-			fourthDate = new Date("2014/1/31");
-		  	category.create(generateTestCategory('Expense test 4', 'E', 150, fourthDate),
+		  	category.create(generateTestCategory('Category test 4'),
 		  	  function(err, doc) {
 		  		if (err) { throw err; }
 		    	fourthCategoryId = doc._id;
 		  	});		
 		}
-*/
+
 		before(function (done) {
 		    db = mongoose.connect(config.dbtest.mongodb);
 		    done(); 
@@ -66,118 +63,37 @@ describe('Mongodb API', function() {
 		    done();
 		  });
 		});		
-/*
+
 		it('should find an category by id', function(done) {
 			request(config.apidb.url)
-				.get('/entries/' + firstCategoryId)
+				.get('/categories/' + firstCategoryId)
 				.end(function(err, res) {
 					if (err) { return done(err); }
 					res.status.should.equal(200);
 					res.body.should.have.property('_id');
-					res.body.concept.should.equal('Income test');
-					res.body.conceptType.should.equal('I');
-					res.body.amount.should.equal(3000);
-					new Date(res.body.date).should.deep.equal(new Date(firstDate));
+					res.body.name.should.equal('Category test');
 					done();
 				});
 		});
 
-		it('should get all entries', function(done) {
+		it('should get all categories', function(done) {
 			generateSecondaryCategories();				
 			request(config.apidb.url)
-				.get('/entries/')
+				.get('/categories/')
 				.end(function(err, res) {
 					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.length.should.equal(4);
 					res.body[0].should.have.property('_id');
-					res.body[0].concept.should.equal('Income test');
-					res.body[0].conceptType.should.equal('I');
-					res.body[0].amount.should.equal(3000);
-					new Date(res.body[0].date).should.deep.equal(new Date(firstDate));
+					res.body[0].name.should.equal('Category test');
 					res.body[1].should.have.property('_id');
-					res.body[1].concept.should.equal('Income test 2');
-					res.body[1].conceptType.should.equal('I');
-					res.body[1].amount.should.equal(30);
-					new Date(res.body[1].date).should.deep.equal(new Date(secondDate));					
+					res.body[1].name.should.equal('Category test 2');			
 					done();
 				});
 		});		
 
-		it('should get entries filtered by date', function(done) {
-  			generateSecondaryCategories();
-			request(config.apidb.url)
-				.get('/entries?limitDate={"field":"date","start":"2014/01/01","end":"2014/01/31"}') 
-				.end(function(err, res) {
-					if (err) { done(err); }
-					res.status.should.equal(200);
-					res.body.length.should.equal(3);
-					res.body[0].should.have.property('_id');
-					res.body[0].concept.should.equal('Income test');
-					res.body[0].conceptType.should.equal('I');
-					res.body[0].amount.should.equal(3000);
-					new Date(res.body[0].date).should.deep.equal(new Date(firstDate));
-					res.body[1].should.have.property('_id');
-					res.body[1].concept.should.equal('Expense test 3');
-					res.body[1].conceptType.should.equal('E');
-					res.body[1].amount.should.equal(50);
-					new Date(res.body[1].date).should.deep.equal(new Date(thirdDate));	
-					res.body[2].should.have.property('_id');
-					res.body[2].concept.should.equal('Expense test 4');
-					res.body[2].conceptType.should.equal('E');
-					res.body[2].amount.should.equal(150);
-					new Date(res.body[2].date).should.deep.equal(new Date(fourthDate));				
-					done();
-				});
-		});
-
-		it('should get entries filtered by conceptType', function(done) {
-  			generateSecondaryCategories();
-			request(config.apidb.url)
-				.get('/entries?query={"conceptType":"E"}' + 
-							'&limitDate={"field":"date","start":"2014/01/01","end":"2014/01/31"}') 
-				.end(function(err, res) {
-					if (err) { done(err); }
-					res.status.should.equal(200);
-					res.body.length.should.equal(2);
-					res.body[0].should.have.property('_id');
-					res.body[0].concept.should.equal('Expense test 3');
-					res.body[0].conceptType.should.equal('E');
-					res.body[0].amount.should.equal(50);
-					new Date(res.body[0].date).should.deep.equal(new Date(thirdDate));
-					res.body[1].should.have.property('_id');
-					res.body[1].concept.should.equal('Expense test 4');
-					res.body[1].conceptType.should.equal('E');
-					res.body[1].amount.should.equal(150);
-					new Date(res.body[1].date).should.deep.equal(new Date(fourthDate));				
-					done();
-				});
-		});
-
-		it('should get entries filtered by amount', function(done) {
-  			generateSecondaryCategories();
-			request(config.apidb.url)
-				.get('/entries?limitNumber={"field":"amount","start":150,"end":3000}') 
-				.end(function(err, res) {
-					if (err) { done(err); }
-					res.status.should.equal(200);
-					res.body.length.should.equal(2);
-					res.body[0].should.have.property('_id');
-					res.body[0].concept.should.equal('Income test');
-					res.body[0].conceptType.should.equal('I');
-					res.body[0].amount.should.equal(3000);
-					new Date(res.body[0].date).should.deep.equal(new Date(firstDate));
-					res.body[1].should.have.property('_id');
-					res.body[1].concept.should.equal('Expense test 4');
-					res.body[1].conceptType.should.equal('E');
-					res.body[1].amount.should.equal(150);
-					new Date(res.body[1].date).should.deep.equal(new Date(fourthDate));				
-					done();
-				});
-		});
-*/
 		it('should save an category', function(done) {
-			var newCategory = generateTestCategory('Category test 2');				
+			var newCategory = generateTestCategory('Category test saved');				
 
 			request(config.apidb.url)
 				.post('/categories')
@@ -192,7 +108,7 @@ describe('Mongodb API', function() {
 						.end(function(err, res) {
 							if (err) { done(err); }
 							res.status.should.equal(200);
-							res.body.name.should.equal('Category test 2');	
+							res.body.name.should.equal('Category test saved');	
 							done();						
 					});	
 				});
