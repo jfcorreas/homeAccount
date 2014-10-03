@@ -11,10 +11,13 @@
 · Asignar un apunte a distintas categorías
 	| Una categoría contiene: su nombre
 	| Crear una nueva categoría
-	· Eliminar una categoría existente
+	| Acceder a una categoría existente
+	| Actualizar una categoría existente
+	| Eliminar una categoría existente (no utilizada)
+	· No permitir eliminar una categoría asignada a un apunte
+	· No permitir eliminar una categoría que posea subcategorías
 	· Establecer relaciones jerárquicas entre categorías
 	· Actualizar la jerarquía de una categoría existente 
-	· Acceder a una categoría existente
 	· Asignar una categoría a un apunte
 · Asociar un apunte con distintos miembros de la casa
 	· Crear un nuevo miembro (sólo nombre)
