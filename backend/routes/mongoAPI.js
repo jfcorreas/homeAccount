@@ -4,12 +4,12 @@
  */
 
 var Entry = require('../models/entry');
+var Category = require('../models/category');
 var underscore = require('underscore');
 
 var _collection = function(collection) {
-	if (collection = 'entries') {
-		return Entry;
-	}
+	if (collection == 'entries') return Entry;
+	if (collection == 'categories') return Category;
 };
 
 module.exports = function(app){

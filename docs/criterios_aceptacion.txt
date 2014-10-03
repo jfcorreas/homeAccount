@@ -8,9 +8,9 @@
 		| Recuperar todos los apuntes almacenados
 		| Recuperar apuntes según criterios: tipo, importe o fecha
 		| Eliminar un apunte existente
-· Asignar un apunte con distintas categorías
+· Asignar un apunte a distintas categorías
 	| Una categoría contiene: su nombre
-	· Crear una nueva categoría
+	| Crear una nueva categoría
 	· Eliminar una categoría existente
 	· Establecer relaciones jerárquicas entre categorías
 	· Actualizar la jerarquía de una categoría existente 
