@@ -64,7 +64,7 @@ describe('Mongodb API', function() {
 		  });
 		});		
 
-		it('should find an category by id', function(done) {
+		it('should find a category by id', function(done) {
 			request(config.apidb.url)
 				.get('/categories/' + firstCategoryId)
 				.end(function(err, res) {
@@ -92,7 +92,7 @@ describe('Mongodb API', function() {
 				});
 		});		
 
-		it('should save an category', function(done) {
+		it('should save a category', function(done) {
 			var newCategory = generateTestCategory('Category test saved');				
 
 			request(config.apidb.url)
@@ -113,15 +113,14 @@ describe('Mongodb API', function() {
 					});	
 				});
 		});
-/*
-		it('should update an category', function(done) {
+
+		it('should update a category', function(done) {
 			var updatedCategory = { 
-			    concept: 'Income test Updated',
-			    amount: 301
+			    name: 'Category test Updated'
 			};			
 
 			request(config.apidb.url)
-				.put('/entries/' + firstCategoryId)
+				.put('/categories/' + firstCategoryId)
 				.send(updatedCategory)
 				.end(function(err, res) {
 					if (err) { done(err); }
@@ -129,18 +128,15 @@ describe('Mongodb API', function() {
 					res.body.ok.should.equal(1);
 					res.body.documentsUpdated.should.equal(1);
 					request(config.apidb.url)
-						.get('/entries/' + firstCategoryId)
+						.get('/categories/' + firstCategoryId)
 						.end(function(err, res) {
 							if (err) { done(err); }
-							res.body.concept.should.equal('Income test Updated');
-							res.body.conceptType.should.equal('I');
-							res.body.amount.should.equal(301);
-							new Date(res.body.date).should.deep.equal(new Date(firstDate));
+							res.body.name.should.equal('Category test Updated');
 							done();
 					});						
 			});
 		});
-
+/*
 		it('should fail updating a bad property in an category', function(done) {
 			var updatedCategory = {
 		    	conceptType: 'BAD',
@@ -156,7 +152,7 @@ describe('Mongodb API', function() {
 			});
 		});		
 */
-		it('should remove an category by id', function(done) {
+		it('should remove a category by id', function(done) {
 			request(config.apidb.url)
 				.del('/categories/' + firstCategoryId)
 				.end(function(err, res) {
