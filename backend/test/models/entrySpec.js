@@ -2,10 +2,10 @@
 
 var expect = require('chai').expect,
     should = require('chai').should(),
-    config = require('../config');
+    config = require('../../config');
 
 var mongoose = require('mongoose'),
-    entry = require('../models/entry');
+    entry = require('../../models/entry');
 
 describe('Models', function () {
 
