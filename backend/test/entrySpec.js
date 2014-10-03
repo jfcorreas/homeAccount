@@ -22,14 +22,15 @@ describe('Models', function () {
 
     beforeEach(function (done) {
       currentDate = Date.now();
-      var oneEntry = { 
+      var oneEntry = new entry({ 
         concept: 'Income test',
         conceptType: 'I',
         amount: 3000,
-        date: currentDate
-      };
-      entry.create(oneEntry, function(err, doc) {
-        if (err) { throw err; }
+        date: currentDate,
+        categories: []
+      });
+      oneEntry.save(function(err, doc) {
+        if (err) { return done(err); }
         currentEntry = doc;
         done();
       });
@@ -45,13 +46,14 @@ describe('Models', function () {
       should.exist(currentEntry);
     });
 
-    it('should contain: concept, conceptType, amount, and date', function (done) {
+    it('should contain: concept, conceptType, amount, date and categories', function (done) {
       entry.findOne({concept: 'Income test'})
         .exec(function(err, doc) {
           expect(doc.concept).to.equal('Income test');
           expect(doc.conceptType).to.equal('I');
-          expect(doc.amount).to.equal(3000);
+          expect(Number(doc.amount)).to.equal(3000);
           expect(doc.date).to.deep.equal(new Date(currentDate));
+          expect(doc.categories).to.be.an('array');
           done();
         });
     });

@@ -66,11 +66,11 @@ describe('Mongodb API', function() {
 		beforeEach(function (done) {
 		  	entry.create(generateTestEntry('Income test', 'I', 3000, firstDate),
 		  	 function(err, doc) {
-		  		if (err) { throw err; }
+		  		if (err) { return done(err); }
 		    	firstEntryId = doc._id;
 		    	done();
 		  	});				
-		});	
+		});
 
 		afterEach(function(done) {
 		  entry.remove({}, function() {
@@ -82,7 +82,7 @@ describe('Mongodb API', function() {
 			request(config.apidb.url)
 				.get('/entries/' + firstEntryId)
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { return done(err); }
 					res.status.should.equal(200);
 					res.body.should.have.property('_id');
 					res.body.concept.should.equal('Income test');
@@ -98,7 +98,7 @@ describe('Mongodb API', function() {
 			request(config.apidb.url)
 				.get('/entries/')
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.length.should.equal(4);
 					res.body[0].should.have.property('_id');
@@ -120,7 +120,7 @@ describe('Mongodb API', function() {
 			request(config.apidb.url)
 				.get('/entries?limitDate={"field":"date","start":"2014/01/01","end":"2014/01/31"}') 
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.length.should.equal(3);
 					res.body[0].should.have.property('_id');
@@ -148,7 +148,7 @@ describe('Mongodb API', function() {
 				.get('/entries?query={"conceptType":"E"}' + 
 							'&limitDate={"field":"date","start":"2014/01/01","end":"2014/01/31"}') 
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.length.should.equal(2);
 					res.body[0].should.have.property('_id');
@@ -170,7 +170,7 @@ describe('Mongodb API', function() {
 			request(config.apidb.url)
 				.get('/entries?limitNumber={"field":"amount","start":150,"end":3000}') 
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.length.should.equal(2);
 					res.body[0].should.have.property('_id');
@@ -195,14 +195,14 @@ describe('Mongodb API', function() {
 				.post('/entries')
 				.send(newEntry)
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.ok.should.equal(1);
 					res.body.should.have.property('objectId');
 					request(config.apidb.url)
 						.get('/entries/' + res.body.objectId)
 						.end(function(err, res) {
-							if (err) { throw err; }
+							if (err) { done(err); }
 							res.status.should.equal(200);
 							res.body.concept.should.equal('Income test 2');
 							res.body.conceptType.should.equal('I');
@@ -223,14 +223,14 @@ describe('Mongodb API', function() {
 				.put('/entries/' + firstEntryId)
 				.send(updatedEntry)
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.ok.should.equal(1);
 					res.body.documentsUpdated.should.equal(1);
 					request(config.apidb.url)
 						.get('/entries/' + firstEntryId)
 						.end(function(err, res) {
-							if (err) { throw err; }
+							if (err) { done(err); }
 							res.body.concept.should.equal('Income test Updated');
 							res.body.conceptType.should.equal('I');
 							res.body.amount.should.equal(301);
@@ -249,7 +249,7 @@ describe('Mongodb API', function() {
 				.put('/entries/' + firstEntryId)
 				.send(updatedEntry)
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { done(err); }
 					res.status.should.equal(406);
 					done();
 			});
@@ -259,13 +259,13 @@ describe('Mongodb API', function() {
 			request(config.apidb.url)
 				.del('/entries/' + firstEntryId)
 				.end(function(err, res) {
-					if (err) { throw err; }
+					if (err) { done(err); }
 					res.status.should.equal(200);
 					res.body.ok.should.equal(1);
 					request(config.apidb.url)
 						.get('/entries/' + firstEntryId)
 						.end(function(err, res) {
-							if (err) { throw err; }
+							if (err) { done(err); }
 							res.status.should.equal(404);
 							done();
 					});	

@@ -9,10 +9,10 @@
 		| Recuperar apuntes según criterios: tipo, importe o fecha
 		| Eliminar un apunte existente
 · Asignar un apunte con distintas categorías
-	· Crear una nueva categoría (sólo nombre)
+	· Una categoría contiene: su nombre
+	· Crear una nueva categoría
 	· Eliminar una categoría existente
 	· Establecer relaciones jerárquicas entre categorías
-	· No permitir dos categorías con mismo nombre y con el mismo padre
 	· Actualizar la jerarquía de una categoría existente 
 	· Acceder a una categoría existente
 	· Asignar una categoría a un apunte

@@ -1,8 +1,9 @@
 'use strict';
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
 
-var EntrySchema = new mongoose.Schema({
+var EntrySchema = new Schema({
 	concept: {
 		type: String,
 		required: true
@@ -21,9 +22,15 @@ var EntrySchema = new mongoose.Schema({
 		type: Date,
 		required: true,
 		default: Date.now 	
-	}
+	},
+	categories: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Category'
+	}]	
 });
 try {
+	
+// Compile the model
 	mongoose.model('Entry', EntrySchema);
 } catch (error) {}
 
